@@ -25,6 +25,8 @@
 #' @param select Should model selection be used to find counter-factual
 #'  histogram? See details.
 #' @param draw Should a graph be drawn?
+#' @param title Title for plot output
+#' @param varname Name for running variable, to be desplayed in the plot
 #'
 #' @details A histogram is created from the earnings vector, with the kink
 #' point zstar as the center of one of the bins.
@@ -59,7 +61,7 @@
 #' ability_vec <- 4000 * rbeta(100000, 2, 5)
 #' earning_vec <- sapply(ability_vec, earning_fun, 0.2, 0, 0.2, 0, 1000)
 #' # bunch_viewer(earning_vec, 1000, 40, 40, 1, 1, binw = 10)
-#' kink_estimator(earning_vec, 1000, 0, 0.2, 40, 40, 1, 1, 10, draw = FALSE)$e
+#' kink_estimator(earning_vec, 1000, 0, 0.2, 40, 40, 1, 1, binw = 10, draw = FALSE)$e
 #'
 #' @export
 #'
@@ -68,7 +70,8 @@ kink_estimator <- function(earnings, zstar,  t1, t2,
                            cf_start = NA, cf_end = NA,
                            exclude_before = 2, exclude_after = 2, binw = 10,
                            poly_size = 7, convergence = 0.01, max_iter = 100,
-                           correct = TRUE, select = TRUE,draw = TRUE) {
+                           correct = TRUE, select = TRUE, draw = TRUE,
+                           title = "Bunching Visualization", varname = "Earnings") {
   ## ---------------------------------------------------------------------------
   ## Error handling
   # these two should not happen if run through bunch
@@ -206,8 +209,8 @@ kink_estimator <- function(earnings, zstar,  t1, t2,
     graphics::plot(bunch_hist, freq=TRUE,ylim=c(0,1.1 *
                                         stats::quantile(bunch_hist$counts,
                                                                 probs=c(0.99))),
-         main=paste0("Bunching Visualization"),
-         xlab="Earnings",ylab="Counts (bunch not to scale)")
+         main = paste(title),
+         xlab= paste(varname) ,ylab="Counts (bunch not to scale)")
     graphics::lines(x=reg_data$mid, y=reg_data$cf_counts,col="purple",lwd=2)
     graphics::abline(v=c(zstar - binw / 2 - exclude_before * binw,
                zstar + binw / 2 + exclude_after * binw),

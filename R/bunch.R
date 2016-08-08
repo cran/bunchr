@@ -15,6 +15,10 @@
 #' @param exclude_before Number of excluded bins before the kink bin.
 #' @param exclude_after Number of excluded bins after the kink bin.
 #' @param binw Bin width.
+#' @param force_after For notch analysis, should \code{bunch} be forced to use
+#' of the provided \emph{exclude_after} for the end of the bunching, rather than
+#' trying to find the bin where the sum of the integral is zero? See details at
+#' \code{\link{notch_estimator}} documentation.
 #' @param poly_size Order of polynomial used to calculate counter-factual
 #'  histogram.
 #' @param convergence Minimal rate of change of bunching estimate to stop
@@ -27,6 +31,9 @@
 #' @param draw Should a graph be drawn?
 #' @param nboots how many bootstraps should be run?
 #' @param seed specify seed for bootstraps (earnings sampling).
+#' @param progress Should a progress bar be desplayed?
+#' @param title Title for Plot output
+#' @param varname Name for running variable, to be desplayed in the plot
 #'
 #' @details \code{bunch} checks if the specification has a kink, i.e. if the Tax
 #' parameter is greater than zero. If so, it applies \code{notch_estimator}.
@@ -62,10 +69,12 @@
 
 bunch <- function(earnings, zstar, t1, t2, Tax = 0,
                    cf_start = NA, cf_end = NA,
-                   exclude_before = NA, exclude_after = NA,
+                   exclude_before = NA, exclude_after = NA, force_after = FALSE,
                    binw = 10, poly_size = 7,
                    convergence = 0.01, max_iter = 100,
-                   correct = TRUE, select = TRUE, draw = TRUE, nboots = 0, seed = NA) {
+                   correct = TRUE, select = TRUE, draw = TRUE, nboots = 0,
+                   seed = NA, progress = FALSE,
+                   title = "Bunching Visualization", varname = "Earnings") {
   ## ---------------------------------------------------------------------------
   ## Error handling - this deals with all sorts of user errors in the input of
   #  parameters. These issues are NOT dealt with in the specific functions.
@@ -134,6 +143,10 @@ bunch <- function(earnings, zstar, t1, t2, Tax = 0,
   if (nboots > 0 & nboots < 50) {
     warning("Such few bootstraps?")
   }
+  if (!is.logical(progress)) {
+    warning("Wrong input for progress bar option, not showing it")
+    progress <- FALSE
+  }
 
   ## ---------------------------------------------------------------------------
 
@@ -150,7 +163,9 @@ bunch <- function(earnings, zstar, t1, t2, Tax = 0,
 
     result1 <- kink_estimator(earnings, zstar, t1, t2, cf_start, cf_end,
                               exclude_before, exclude_after, binw, poly_size,
-                              convergence, max_iter, correct, select, draw)
+                              convergence, max_iter, correct, select, draw,
+                              title, varname)
+    # bootstrap procedure
     if (nboots > 0) {
       boot_e <- rep(NA, nboots)
       boot_Bn <- rep(NA, nboots)
@@ -158,19 +173,33 @@ bunch <- function(earnings, zstar, t1, t2, Tax = 0,
       if (!is.na(seed)) {
         set.seed(seed)
       }
+      # draw progress bar if required
+      if (progress == TRUE) {
+        pb <- utils::txtProgressBar(min = 1, max = nboots, initial = 1, char = "=",
+                                    width = 80, style = 3)
+      }
+      # run bootstrapps
       for (i in 1:nboots) {
         temp_pop <- sample(earnings,population,replace=TRUE)
         temp_result <- kink_estimator(temp_pop, zstar, t1, t2, cf_start, cf_end,
                                      exclude_before, exclude_after, binw, poly_size,
                                      convergence, max_iter, correct, select,
-                                     draw=FALSE)
+                                     draw=FALSE, title, varname)
         boot_e[i] <- temp_result$e
         boot_Bn[i] <- temp_result$Bn
         boot_b[i] <- temp_result$b
-        if (i%%10 == 0) {
-          print(paste0("Done with ", i, " bootstraps ", Sys.time()))
+
+        # update progress bar if required
+        if (progress == TRUE) {
+          utils::setTxtProgressBar(pb, value = i)
         }
+      }  # end bootstrap loop
+
+      # close progress bar if required
+      if (progress == TRUE) {
+        close(pb)
       }
+
       results <- list("e" = result1$e,
                       "Bn" = result1$Bn,
                       "b" = result1$b,
@@ -188,9 +217,11 @@ bunch <- function(earnings, zstar, t1, t2, Tax = 0,
   if (Tax > 0) {
     result1 <- notch_estimator(earnings, zstar, t1, t2, Tax,
                                cf_start, cf_end,
-                               exclude_before, exclude_after,
+                               exclude_before, exclude_after, force_after,
                                binw, poly_size,
-                               convergence, max_iter, select, draw)
+                               convergence, max_iter, select, draw,
+                               title, varname)
+    # bootstrap procedure
     if (nboots > 0) {
       boot_e <- rep(NA, nboots)
       boot_Bn <- rep(NA, nboots)
@@ -198,20 +229,35 @@ bunch <- function(earnings, zstar, t1, t2, Tax = 0,
       if (!is.na(seed)) {
         set.seed(seed)
       }
+
+      # draw progress bar if required
+      if (progress == TRUE) {
+        pb <- utils::txtProgressBar(min = 1, max = nboots, initial = 1, char = "=",
+                                    width = 80, style = 3)
+      }
       for (i in 1:nboots) {
         temp_pop <- sample(earnings,population,replace = TRUE)
         temp_result <- notch_estimator(temp_pop, zstar, t1, t2, Tax,
                                       cf_start, cf_end,
-                                      exclude_before, exclude_after, binw,
+                                      exclude_before, exclude_after, force_after,
+                                      binw,
                                       poly_size, convergence, max_iter, select,
-                                      draw = FALSE)
+                                      draw = FALSE, title, varname)
         boot_e[i] <- temp_result$e
         boot_Bn[i] <- temp_result$Bn
         boot_dz[i] <- temp_result$notch_size
-        if (i%%10 == 0) {
-          print(paste0("Done with ", i, " bootstraps ", Sys.time()))
+
+        # update progress bar if required
+        if (progress == TRUE) {
+          utils::setTxtProgressBar(pb, value = i)
         }
+      }  # end bootstrap loop
+
+      # close progress bar if required
+      if (progress == TRUE) {
+        close(pb)
       }
+
       results <- list("e" = result1$e,
                       "Bn" = result1$Bn,
                       "notch_size" = result1$notch_size,
