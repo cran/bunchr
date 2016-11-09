@@ -1,7 +1,7 @@
-5913ce287a47dcff16be58e8d5a68be0 *DESCRIPTION
+9d6d6aee339dc6ec1a10b2c90da9dd30 *DESCRIPTION
 8dbb27dbf2dc0f999f495c413f6e0506 *LICENSE
 883cfb659f0db1e5d6b3dfb5cf490d00 *NAMESPACE
-08afccd7049e17c1a5a6619e9c2cf98d *NEWS.md
+3444c3bb8cfd79772b8c268c2745c877 *NEWS.md
 e27e46805f9ed0303872647b0c57a518 *R/bunch.R
 fa5761e1b60f7c7fe81fe45e2fa22853 *R/bunch_viewer.R
 d8934f885ea83376260e6fb202a1d3f9 *R/bunchr.R
@@ -14,11 +14,11 @@ f011f03ff990e05f57da6fe36d35ff2f *R/util_calc.R
 486b24875ace8eca0f62585721ca4299 *README.md
 42f0d980a9e54ec15491accec1ad86f6 *build/vignette.rds
 8dbb27dbf2dc0f999f495c413f6e0506 *inst/LICENSE
-cca5d43743cd80c16c5360148c47599f *inst/doc/bunching_with_bunchr.R
-b178ee809ae4f49a217c60f4c269a30b *inst/doc/bunching_with_bunchr.Rmd
-e4b75f260a7b2a28b6a03aa2d24f9341 *inst/doc/bunching_with_bunchr.html
+cd274789fdbb667c609507b039704ef5 *inst/doc/bunching_with_bunchr.R
+5d1640de751d743c951ba9c033997e49 *inst/doc/bunching_with_bunchr.Rmd
+8bdd9a70a5df160d5ba4cd8b69ebdeeb *inst/doc/bunching_with_bunchr.html
 f85e69404495b2830983f5686c789a4f *inst/doc/notch_estimation.Rmd
-a43bf439ba5c40f030f1c9c418ea704d *inst/doc/notch_estimation.html
+c8c42f8c184f1375c9572e4d7a547191 *inst/doc/notch_estimation.html
 6e79bdb77cfdc76ccbf9a5b1a3c9baae *inst/extdata/compare_results.csv
 a28186e341e777f3bd62f339f67d9d97 *inst/extdata/show_data.csv
 7116cc07cc18d8a8a715c9b6eb68ef66 *inst/extdata/sim_data.csv
@@ -35,5 +35,5 @@ ed6131912b7aca69a48d061223fafeee *man/notch_estimator.Rd
 466d5331912dfec59259522b5948a947 *tests/testthat/test_input.R
 63678bf7b9723f53030b6a4a93a5067e *tests/testthat/test_kink.R
 a9450bd83fb3ad24874cdae1c1421003 *tests/testthat/test_notch.R
-b178ee809ae4f49a217c60f4c269a30b *vignettes/bunching_with_bunchr.Rmd
+5d1640de751d743c951ba9c033997e49 *vignettes/bunching_with_bunchr.Rmd
 f85e69404495b2830983f5686c789a4f *vignettes/notch_estimation.Rmd
