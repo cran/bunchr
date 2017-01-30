@@ -1,7 +1,7 @@
-65da7c84f5219fe33ba2df2dfd6c41f3 *DESCRIPTION
-8dbb27dbf2dc0f999f495c413f6e0506 *LICENSE
+978de69ec1d135d5e057d002d921f236 *DESCRIPTION
+b95591b6cd63c9f14bac1b3a2c67c44e *LICENSE
 f7c29f2ea616d35b9a5d75e014202d3f *NAMESPACE
-3cf9ec5382dc6122abe87f3e69dfc699 *NEWS.md
+63eb54a0d475aa2ad782ce7a8d27cdc9 *NEWS.md
 e27e46805f9ed0303872647b0c57a518 *R/bunch.R
 b847d817661cb56863767c2fbad17c44 *R/bunchApp.R
 fa5761e1b60f7c7fe81fe45e2fa22853 *R/bunch_viewer.R
@@ -15,8 +15,9 @@ f011f03ff990e05f57da6fe36d35ff2f *R/util_calc.R
 486b24875ace8eca0f62585721ca4299 *README.md
 f1c79124597fe237852af2422de1d751 *build/vignette.rds
 8dbb27dbf2dc0f999f495c413f6e0506 *inst/LICENSE
-898025aaae4eaf82cc1c55e5dcb4fcb2 *inst/bunchApp/app.R
-173228c62233a6f2648e109b8b8362ae *inst/bunchApp/files/app_readme.md
+8b209a21812bded908f111847af7cfdc *inst/bunchApp/app.R
+8e808d24d6a75975d357754090ca9952 *inst/bunchApp/files/app_readme.md
+1662a3caf529033966cf981052c7a6d3 *inst/bunchApp/rsconnect/shinyapps.io/trilnick/bunchapp.dcf
 cd274789fdbb667c609507b039704ef5 *inst/doc/bunching_with_bunchr.R
 3eb1bcef943c0ae65a3f399798762066 *inst/doc/bunching_with_bunchr.Rmd
 1cb473c20519fb27f2bc941ef2eb96e7 *inst/doc/bunching_with_bunchr.html
